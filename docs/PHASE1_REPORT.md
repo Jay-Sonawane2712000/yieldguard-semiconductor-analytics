@@ -78,3 +78,11 @@ Phase 1 demonstrates that a trustworthy analytical system starts with semantics,
 ## Residual risks
 
 The 104 total failures are imbalanced and later periods are sparse. Timestamps identify test points but not confirmed process chronology, excursion intervals, equipment, recipes, or specification limits. High correlation among anonymous measurements will require explicit redundancy control in Phase 2. These limitations do not invalidate the project, but they constrain downstream interpretation.
+
+## Files, commits, and repository status
+
+Phase 1 added the repository foundation and memory files; configuration and packaging; acquisition, ingestion, splitting, quality, persistence, and CLI modules; the initial SQL contract; focused unit/integration tests; data acquisition documentation; provenance, evaluation-design, and completion evidence; and the README. Raw source, generated audit CSVs, DuckDB, caches, package metadata, and the virtual environment are ignored.
+
+- `0e6e3bb` — `feat: establish Phase 1 data trust foundation`
+- Documentation checkpoint commit: this report/status update
+- Local branch: `main`; remote: `origin`
