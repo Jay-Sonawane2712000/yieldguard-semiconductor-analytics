@@ -1,0 +1,45 @@
+project:
+  name: YieldGuard
+  random_seed: 2712000
+
+data:
+  dataset_id: 179
+  source_url: https://archive.ics.uci.edu/static/public/179/secom.zip
+  landing_archive: data/raw/secom.zip
+  measurement_file: data/raw/secom.data
+  label_file: data/raw/secom_labels.data
+  names_file: data/raw/secom.names
+  timestamp_format: "%d/%m/%Y %H:%M:%S"
+  pass_label: -1
+  failure_label: 1
+  source_version: "uci-secom-179"
+
+quality:
+  max_missing_fraction: 0.40
+  min_non_null_count: 100
+  near_constant_dominant_fraction: 0.995
+  min_reference_variance: 1.0e-12
+  temporal_bin_count: 10
+  min_temporal_coverage_fraction: 0.80
+  extreme_iqr_multiplier: 3.0
+
+evaluation:
+  preferred_train_fraction: 0.60
+  preferred_calibration_fraction: 0.20
+  minimum_calibration_failures: 10
+  minimum_final_failures: 10
+  candidate_allocations:
+    - [0.60, 0.20, 0.20]
+    - [0.65, 0.20, 0.15]
+    - [0.70, 0.15, 0.15]
+    - [0.70, 0.20, 0.10]
+
+monitoring:
+  target_measurement_count_min: 8
+  target_measurement_count_max: 15
+  pca_contribution_top_k: 10
+  ewma_limit_form: time_varying
+
+outputs:
+  database: data/processed/yieldguard.duckdb
+  phase1_directory: data/processed/phase1
