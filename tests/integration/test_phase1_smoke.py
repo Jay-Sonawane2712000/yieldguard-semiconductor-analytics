@@ -4,6 +4,7 @@ from pathlib import Path
 
 import duckdb
 
+from yieldguard.phase2 import build_phase2
 from yieldguard.pipeline import build_phase1
 
 
@@ -47,6 +48,20 @@ def test_phase1_pipeline_builds_reconciled_duckdb(tmp_path: Path) -> None:
             "min_temporal_coverage_fraction": 0.8,
             "extreme_iqr_multiplier": 3.0,
         },
+        "monitoring": {
+            "target_measurement_count": 2,
+            "target_measurement_count_min": 2,
+            "target_measurement_count_max": 3,
+            "selection_rule_version": "monitoring-selection-test-v1",
+            "ranking_percentile_tie_method": "average",
+            "maximum_pairwise_absolute_correlation": 0.90,
+            "imr_limit_version": "imr-test-v1",
+            "imr_d2": 1.128,
+            "imr_d4": 3.267,
+            "ewma_lambda": 0.20,
+            "ewma_l": 3.0,
+            "ewma_limit_version": "ewma-test-v1",
+        },
         "evaluation": {
             "minimum_calibration_failures": 1,
             "minimum_final_failures": 1,
@@ -66,4 +81,18 @@ def test_phase1_pipeline_builds_reconciled_duckdb(tmp_path: Path) -> None:
     with duckdb.connect(str(processed / "yieldguard.duckdb"), read_only=True) as connection:
         assert connection.execute(
             "SELECT COUNT(DISTINCT entity_id) FROM fact_production_entity"
+        ).fetchone()[0] == rows
+
+    phase2 = build_phase2(config)
+
+    assert phase2["selection"]["selected_count"] == 2
+    assert phase2["architecture"]["fact_sensor_measurement_rows"] == rows * 5
+    assert phase2["architecture"]["fact_spc_signal_rows"] == rows * 2 * 3
+    with duckdb.connect(str(processed / "yieldguard.duckdb"), read_only=True) as connection:
+        assert connection.execute("SELECT COUNT(*) FROM mart_data_trust").fetchone()[0] == 1
+        assert connection.execute(
+            "SELECT COUNT(*) FROM mart_univariate_entity_summary"
+        ).fetchone()[0] == rows
+        assert connection.execute(
+            "SELECT COUNT(*) FROM fact_sensor_measurement WHERE missing_indicator"
         ).fetchone()[0] == rows

@@ -1,12 +1,12 @@
 # Project status
 
-- **Current phase:** Phase 1 — Feasibility, foundation, and data trust (complete; awaiting approval)
-- **Objective:** Establish reproducible SECOM acquisition and ingestion, verify data semantics and trust, select a defensible chronological evaluation design, and create initial DuckDB tables.
-- **Completed:** Startup audit and repository foundation; verbatim approved plan and roadmap; official UCI acquisition with checksums; strict ingestion and normalization; source, timestamp, missingness, measurement-quality, exclusion, and split audits; selected 60/20/20 chronological holdout; initial DuckDB tables; tests and evidence documentation.
-- **Remaining:** Wait for explicit user approval before beginning Phase 2.
-- **Latest verified checkpoint:** The reproducible build produced 1,567 entities, 590 measurements, 104 failures, 440 eligible/150 excluded measurements, and a 940/314/313 chronological split with 76/11/17 failures. DuckDB keys and totals reconcile.
-- **Checks passed:** `yieldguard acquire`; `yieldguard build-phase1`; `python -m pytest` (7 passed); `python -m ruff check src tests`; read-only DuckDB key/count/split/tie reconciliations; commit-candidate secret scan.
+- **Current phase:** Phase 2 — SQL architecture and univariate monitoring (complete; awaiting approval)
+- **Objective:** Complete the hybrid DuckDB/SQL architecture, freeze a label-blind reference-only monitoring subset, and implement traceable I-MR and EWMA signals.
+- **Completed:** Phase 1 foundation plus Phase 2 long-form SQL architecture, frozen 12-measurement label-blind selection, reference-only I-MR/EWMA limits, traceable signals, autocorrelation evidence, stable marts, reconciliation checks, tests, and method documentation.
+- **Remaining:** Create and push verified Phase 2 commits, then wait for explicit Phase 3 approval.
+- **Latest verified checkpoint:** 924,530 long measurement rows and 56,412 unique SPC rows reconcile; 12 measurements are selected with maximum pairwise absolute correlation 0.234945; 1,931 sensor-level signals are persisted with no missing statistic marked as a violation.
+- **Checks passed:** `yieldguard build-phase2` twice with stable outputs; `python -m pytest` (12 passed); `python -m ruff check src tests`; DuckDB grain/key/missing/version/limit/mart reconciliations.
 - **Unresolved failures/blockers:** None.
 - **Relevant commits:** `0e6e3bb` — `feat: establish Phase 1 data trust foundation`; `b2f9ec7` — `docs: record Phase 1 verification evidence`.
-- **Exact next action:** Report the Phase 1 evidence and wait for user approval before Phase 2.
+- **Exact next action:** Commit and push Phase 2, report evidence, and wait for explicit Phase 3 approval.
 - **Push status:** `main` through `b2f9ec7` is pushed to `origin/main`.

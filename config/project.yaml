@@ -37,6 +37,16 @@ evaluation:
 monitoring:
   target_measurement_count_min: 8
   target_measurement_count_max: 15
+  target_measurement_count: 12
+  selection_rule_version: monitoring-selection-v1
+  ranking_percentile_tie_method: average
+  maximum_pairwise_absolute_correlation: 0.90
+  imr_limit_version: imr-reference-v1
+  imr_d2: 1.128
+  imr_d4: 3.267
+  ewma_lambda: 0.20
+  ewma_l: 3.0
+  ewma_limit_version: ewma-reference-time-varying-v1
   pca_contribution_top_k: 10
   ewma_limit_form: time_varying
 
