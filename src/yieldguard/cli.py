@@ -8,6 +8,7 @@ import json
 from yieldguard.acquire import acquire_dataset
 from yieldguard.config import load_config
 from yieldguard.phase2 import build_phase2
+from yieldguard.phase3 import build_phase3
 from yieldguard.pipeline import build_phase1
 
 
@@ -23,6 +24,10 @@ def _parser() -> argparse.ArgumentParser:
         "build-phase2",
         help="Build SQL architecture, select sensors, and generate I-MR/EWMA signals",
     )
+    subcommands.add_parser(
+        "build-phase3",
+        help="Fit reference-only PCA monitoring and generate T-squared/Q alerts",
+    )
     return parser
 
 
@@ -34,8 +39,10 @@ def main() -> None:
         result = acquire_dataset(config, force=args.force)
     elif args.command == "build-phase1":
         result = build_phase1(config)
-    else:
+    elif args.command == "build-phase2":
         result = build_phase2(config)
+    else:
+        result = build_phase3(config)
     print(json.dumps(result, indent=2, default=str))
 
 

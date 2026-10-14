@@ -6,7 +6,7 @@ The project supports yield, process integration, quality, and manufacturing anal
 
 ## Current verified scope
 
-Phase 1 verified 1,567 production entities, 590 anonymized measurements, 104 failures, 440 quality-eligible measurements, and a retained final chronological block. Phase 2 freezes 12 label-blind monitoring measurements and builds traceable reference-fitted I-MR/EWMA signals over a reconciled wide/long DuckDB architecture. See `docs/PHASE1_REPORT.md` and `docs/PHASE2_REPORT.md`; later-phase results are intentionally not claimed yet.
+Phase 1 verified 1,567 production entities, 590 anonymized measurements, 104 failures, 440 quality-eligible measurements, and a retained final chronological block. Phase 2 freezes 12 label-blind monitoring measurements and builds traceable reference-fitted I-MR/EWMA signals. Phase 3 adds reference-only PCA T-squared/Q monitoring and top-ten measurement contributions for every entity. See the phase reports under `docs/`; outcome association and final evaluation have not begun.
 
 ## Setup and Phase 1 reproduction
 
@@ -17,6 +17,7 @@ python -m pip install -e ".[dev]"
 yieldguard acquire
 yieldguard build-phase1
 yieldguard build-phase2
+yieldguard build-phase3
 python -m pytest
 python -m ruff check .
 ```
@@ -34,6 +35,8 @@ Raw source files, generated CSVs, and the local DuckDB database are intentionall
 - `docs/PROJECT_STATUS.md` and `docs/DECISIONS.md` — resumable project memory
 - `docs/univariate_monitoring.md` — frozen selection rule, formulas, alert volume, and limitations
 - `docs/phase2_architecture.md` — SQL grains, keys, marts, and reconciliation controls
+- `docs/pca_monitoring.md` — reference-only PCA, thresholds, and contribution formulas
+- `docs/phase3_architecture.md` — multivariate tables, marts, and reconciliation controls
 
 ## Dataset attribution
 

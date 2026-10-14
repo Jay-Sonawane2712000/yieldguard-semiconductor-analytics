@@ -39,3 +39,11 @@
 - **Why:** These are transparent, standard formulas that can be audited and tested. Time-varying EWMA limits match the approved configuration and reflect startup behavior.
 - **Alternatives:** Steady-state EWMA limits were approved but would ignore startup narrowing. Supplementary run rules remain optional and are not added in Phase 2.
 - **Consequences:** Limits use reference measurements only. Missing observations are not interpolated, do not update EWMA state, and break Moving Range adjacency. Autocorrelation can inflate nominal false-alarm rates and must be reported.
+
+## D-006 — Freeze reference-only empirical PCA monitoring
+
+- **Status:** Agent decision within the approved Phase 3 scope; frozen before outcome association or final-test evaluation.
+- **Decision:** Fit median imputation, standard scaling, and PCA on the 940-entity reference period using all 440 Phase 1 quality-eligible measurements. Retain the fewest components reaching at least 90% reference explained variance. Set separate T-squared and Q/SPE limits to the reference empirical 99th percentile using the conservative `higher` sample quantile.
+- **Why:** The rule is deterministic, label-blind, robust to missing measurement cells, and makes no distributional assumption that the sparse, anonymous public dataset cannot support.
+- **Alternatives:** Parametric T-squared/Jackson Q limits and bootstrap limits were allowed, but empirical limits are simpler to audit and align directly with the observed reference distribution. Fitting on calibration or final data is prohibited.
+- **Consequences:** Model `pca-reference-v1` retains 121 components and 90.1631% reference variance. Threshold version `pca-empirical-reference-q99-v1` is frozen at T-squared 551.588214 and Q/SPE 111.311774. Later outcome analysis must not revise preprocessing, component count, or limits.

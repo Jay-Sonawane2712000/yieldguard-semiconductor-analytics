@@ -47,8 +47,14 @@ monitoring:
   ewma_lambda: 0.20
   ewma_l: 3.0
   ewma_limit_version: ewma-reference-time-varying-v1
-  pca_contribution_top_k: 10
   ewma_limit_form: time_varying
+
+pca:
+  model_version: pca-reference-v1
+  threshold_version: pca-empirical-reference-q99-v1
+  explained_variance_target: 0.90
+  threshold_quantile: 0.99
+  pca_contribution_top_k: 10
 
 outputs:
   database: data/processed/yieldguard.duckdb
