@@ -6,7 +6,7 @@ The project supports yield, process integration, quality, and manufacturing anal
 
 ## Current verified scope
 
-Phase 1 verified 1,567 production entities, 590 anonymized measurements, 104 failures, 440 quality-eligible measurements, and a retained final chronological block. Phase 2 freezes 12 label-blind monitoring measurements and builds traceable reference-fitted I-MR/EWMA signals. Phase 3 adds reference-only PCA T-squared/Q monitoring and top-ten measurement contributions for every entity. See the phase reports under `docs/`; outcome association and final evaluation have not begun.
+Phase 1 verified 1,567 production entities, 590 anonymized measurements, 104 failures, 440 quality-eligible measurements, and a retained final chronological block. Phase 2 freezes label-blind I-MR/EWMA monitoring, Phase 3 adds reference-only PCA T-squared/Q monitoring, and Phase 4 adds development-only failure associations plus a frozen retrospective risk-ranking policy and auditable review queue. See the phase reports under `docs/`; all sparse-failure performance estimates are directional.
 
 ## Setup and Phase 1 reproduction
 
@@ -18,6 +18,10 @@ yieldguard acquire
 yieldguard build-phase1
 yieldguard build-phase2
 yieldguard build-phase3
+yieldguard phase4-calibrate
+yieldguard phase4-develop
+# Commit the frozen budget decision before the next command.
+yieldguard phase4-final
 python -m pytest
 python -m ruff check .
 ```
@@ -37,6 +41,9 @@ Raw source files, generated CSVs, and the local DuckDB database are intentionall
 - `docs/phase2_architecture.md` — SQL grains, keys, marts, and reconciliation controls
 - `docs/pca_monitoring.md` — reference-only PCA, thresholds, and contribution formulas
 - `docs/phase3_architecture.md` — multivariate tables, marts, and reconciliation controls
+- `docs/PHASE4_DEVELOPMENT_REPORT.md` — pre-final model, association, and budget evidence
+- `docs/PHASE4_REPORT.md` — frozen final evaluation and review-queue evidence
+- `docs/phase4_architecture.md` — Phase 4 grains, commands, and leakage controls
 
 ## Dataset attribution
 

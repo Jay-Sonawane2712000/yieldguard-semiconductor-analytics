@@ -3,7 +3,12 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from yieldguard.risk import calibration_summary, deterministic_rank, monitoring_baseline
+from yieldguard.risk import (
+    calibration_summary,
+    deterministic_rank,
+    metric_intervals,
+    monitoring_baseline,
+)
 
 
 def test_deterministic_rank_uses_scores_then_time_and_id() -> None:
@@ -32,6 +37,18 @@ def test_calibration_summary_reconciles_bin_counts() -> None:
     assert bins["entity_count"].sum() == 6
     assert len(bins) == 3
     assert 0 <= ece <= 1
+
+
+def test_metric_intervals_are_reproducible_and_report_requested_replicates() -> None:
+    outcomes = np.array([0, 0, 0, 1, 1, 1])
+    scores = np.array([0.1, 0.2, 0.6, 0.4, 0.8, 0.9])
+
+    first = metric_intervals(outcomes, scores, 25, 9, probability_score=True)
+    second = metric_intervals(outcomes, scores, 25, 9, probability_score=True)
+
+    assert first == second
+    assert first["bootstrap_usable_replicates"] == 25
+    assert first["pr_auc_ci_lower"] <= first["pr_auc_ci_upper"]
 
 
 def test_monitoring_baseline_counts_imr_measurement_once_and_uses_max_severity() -> None:

@@ -93,14 +93,57 @@ def calibration_summary(
     return bins, ece
 
 
-def score_metrics(outcomes: np.ndarray, scores: np.ndarray) -> dict[str, float]:
+def score_metrics(
+    outcomes: np.ndarray, scores: np.ndarray, probability_score: bool = True
+) -> dict[str, float]:
     """Calculate ranking and raw-probability metrics."""
     return {
         "pr_auc": float(average_precision_score(outcomes, scores)),
         "roc_auc": float(roc_auc_score(outcomes, scores)),
-        "brier_score": float(brier_score_loss(outcomes, scores)),
+        "brier_score": (
+            float(brier_score_loss(outcomes, scores)) if probability_score else np.nan
+        ),
         "positive_prevalence": float(np.mean(outcomes)),
     }
+
+
+def metric_intervals(
+    outcomes: np.ndarray,
+    scores: np.ndarray,
+    replicates: int,
+    seed: int,
+    probability_score: bool,
+) -> dict[str, float | int | str]:
+    """Approximate outcome-stratified intervals for ranking/calibration metrics."""
+    generator = np.random.default_rng(seed)
+    failure_positions = np.flatnonzero(outcomes == 1)
+    nonfailure_positions = np.flatnonzero(outcomes == 0)
+    metric_names = ["pr_auc", "roc_auc"]
+    if probability_score:
+        metric_names.append("brier_score")
+    estimates = {name: np.empty(replicates) for name in metric_names}
+    for index in range(replicates):
+        positions = np.concatenate(
+            [
+                generator.choice(failure_positions, len(failure_positions), replace=True),
+                generator.choice(
+                    nonfailure_positions, len(nonfailure_positions), replace=True
+                ),
+            ]
+        )
+        sampled = score_metrics(
+            outcomes[positions], scores[positions], probability_score=probability_score
+        )
+        for name in metric_names:
+            estimates[name][index] = sampled[name]
+    result: dict[str, float | int | str] = {
+        "uncertainty_method": "outcome_stratified_approximate",
+        "bootstrap_usable_replicates": replicates,
+    }
+    for name, values in estimates.items():
+        result[f"{name}_ci_lower"] = float(np.quantile(values, 0.025))
+        result[f"{name}_ci_upper"] = float(np.quantile(values, 0.975))
+    return result
 
 
 def deterministic_rank(
