@@ -60,6 +60,8 @@ phase4:
   design_version: phase4-development-v1
   selected_model: hist_gradient_boosting
   selected_configuration_id: hgb-01
+  headline_budget_policy: top_10_percent
+  headline_budget_fraction: 0.10
   selection_metric: pr_auc
   calibration_method: raw_probability_no_recalibration
   calibration_bins: 5

@@ -63,3 +63,11 @@
 - **Why:** Under the precommitted selection rule, `hgb-01` had the highest predictive-model calibration PR-AUC (0.050925). Its calibration ROC-AUC was 0.620762, Brier score 0.053736, and expected calibration error 0.117081. These estimates are unstable because calibration contains only 11 failures.
 - **Alternatives:** The other three HistGradientBoosting and four logistic configurations remain recorded. The fixed monitoring baseline achieved higher calibration PR-AUC (0.143282), and the prevalence baseline achieved 0.035032; models are not required to beat baselines.
 - **Consequences:** Model family, configuration, feature set, seed, and calibration method are fixed. Development associations may now use reference plus calibration outcomes but cannot revise this choice. The headline review budget remains to be selected and committed before any final-test metrics are calculated.
+
+## D-009 — Freeze a 10% dataset-period review budget before final evaluation
+
+- **Status:** Frozen and committed before calculating or inspecting final-test predictive or policy metrics.
+- **Decision:** Use `top_10_percent` as the headline budget for the frozen `hgb-01` risk ranking. Apply ceiling rounding within each evaluation period, deterministic score/timestamp/entity ranking, and describe the workload only as a dataset-period review scenario.
+- **Why:** On 314 calibration entities, 10% reviews 32 entities and retrospectively detects 2 of 11 failures (precision 0.0625, recall 0.1818). The 20% scenario reviews 63 entities but detects the same two failures, while 1%, 5%, and top-25 detect none. Thus 10% is the smallest predeclared fixed budget with nonzero detection and avoids extra review volume without observed incremental calibration detection.
+- **Alternatives:** Top-50 also detects two failures but reviews 50 entities. The fixed monitoring baseline is stronger overall and remains a required comparator. The F2-maximizing diagnostic reviews 112 entities (35.7%) and is prohibited as the headline recommendation.
+- **Consequences:** The headline fraction cannot change in response to final-test performance. Calibration contains only 11 failures; the approximate 95% interval for 10% model-budget recall is 0 to 0.4545, so all conclusions remain directional.

@@ -10,6 +10,7 @@ from yieldguard.config import load_config
 from yieldguard.phase2 import build_phase2
 from yieldguard.phase3 import build_phase3
 from yieldguard.phase4_calibration import run_phase4_calibration
+from yieldguard.phase4_development import run_phase4_development
 from yieldguard.pipeline import build_phase1
 
 
@@ -33,6 +34,10 @@ def _parser() -> argparse.ArgumentParser:
         "phase4-calibrate",
         help="Compare frozen candidates on calibration data without final outcomes",
     )
+    subcommands.add_parser(
+        "phase4-develop",
+        help="Run frozen development associations and calibration policy analysis",
+    )
     return parser
 
 
@@ -48,8 +53,10 @@ def main() -> None:
         result = build_phase2(config)
     elif args.command == "build-phase3":
         result = build_phase3(config)
-    else:
+    elif args.command == "phase4-calibrate":
         result = run_phase4_calibration(config)
+    else:
+        result = run_phase4_development(config)
     print(json.dumps(result, indent=2, default=str))
 
 
