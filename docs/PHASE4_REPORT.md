@@ -1,6 +1,6 @@
 # Phase 4 completion report
 
-Phase 4 is complete. The model, calibration approach, monitoring baseline, policy scenarios, and 10% headline budget were frozen before final-test evaluation. Git commit `c791507` contains the budget decision and precedes all final metrics in repository history.
+Phase 4 is complete. The model, calibration approach, monitoring baseline, policy scenarios, and 10% headline budget were frozen before final-test evaluation. Git commit `ccfaf2f` contains the budget decision and precedes all final metrics in repository history.
 
 ## Development evidence
 

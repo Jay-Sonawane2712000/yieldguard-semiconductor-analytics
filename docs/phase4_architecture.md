@@ -8,7 +8,7 @@
 4. The headline budget is recorded in `config/project.yaml` and `docs/DECISIONS.md` and committed.
 5. Only then does `yieldguard phase4-final` query final outcomes, fit the frozen champion on development, score the final block, and build the queue.
 
-Commit `c791507` freezes the 10% budget before the final-evaluation implementation and results.
+Commit `ccfaf2f` freezes the 10% budget before the final-evaluation implementation and results.
 
 ## Persisted contracts
 
