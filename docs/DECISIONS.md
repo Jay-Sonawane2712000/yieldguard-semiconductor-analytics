@@ -55,3 +55,11 @@
 - **Why:** This keeps preprocessing inside each training pipeline, stays below the six-configuration cap, uses calibration only for development choices, and avoids fitting an unstable extra calibrator to 11 calibration failures.
 - **Alternatives:** Larger searches, random cross-validation, resampling, additional model families, and final-test tuning are prohibited. Sigmoid or isotonic recalibration was not selected because the calibration period has only 11 failures; calibration will still be reported transparently.
 - **Consequences:** Candidate definitions, selection rule, calibration method, baselines, and policy scenarios cannot change after results are observed. The winning configuration and headline budget require later frozen decisions before development associations and final-test evaluation, respectively.
+
+## D-008 — Freeze the predictive champion before development associations
+
+- **Status:** Frozen after calibration-only selection and before combined-development association analysis; final-test outcomes remain unexamined.
+- **Decision:** Select `hgb-01`, the HistGradientBoosting configuration with learning rate 0.03, 100 iterations, 7 maximum leaf nodes, minimum leaf size 20, L2 regularization 1.0, balanced class weighting, and seed 2712000. Preserve raw probabilities without post-hoc recalibration.
+- **Why:** Under the precommitted selection rule, `hgb-01` had the highest predictive-model calibration PR-AUC (0.050925). Its calibration ROC-AUC was 0.620762, Brier score 0.053736, and expected calibration error 0.117081. These estimates are unstable because calibration contains only 11 failures.
+- **Alternatives:** The other three HistGradientBoosting and four logistic configurations remain recorded. The fixed monitoring baseline achieved higher calibration PR-AUC (0.143282), and the prevalence baseline achieved 0.035032; models are not required to beat baselines.
+- **Consequences:** Model family, configuration, feature set, seed, and calibration method are fixed. Development associations may now use reference plus calibration outcomes but cannot revise this choice. The headline review budget remains to be selected and committed before any final-test metrics are calculated.

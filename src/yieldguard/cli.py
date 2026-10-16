@@ -9,6 +9,7 @@ from yieldguard.acquire import acquire_dataset
 from yieldguard.config import load_config
 from yieldguard.phase2 import build_phase2
 from yieldguard.phase3 import build_phase3
+from yieldguard.phase4_calibration import run_phase4_calibration
 from yieldguard.pipeline import build_phase1
 
 
@@ -28,6 +29,10 @@ def _parser() -> argparse.ArgumentParser:
         "build-phase3",
         help="Fit reference-only PCA monitoring and generate T-squared/Q alerts",
     )
+    subcommands.add_parser(
+        "phase4-calibrate",
+        help="Compare frozen candidates on calibration data without final outcomes",
+    )
     return parser
 
 
@@ -41,8 +46,10 @@ def main() -> None:
         result = build_phase1(config)
     elif args.command == "build-phase2":
         result = build_phase2(config)
-    else:
+    elif args.command == "build-phase3":
         result = build_phase3(config)
+    else:
+        result = run_phase4_calibration(config)
     print(json.dumps(result, indent=2, default=str))
 
 
