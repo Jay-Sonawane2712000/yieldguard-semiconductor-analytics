@@ -56,6 +56,28 @@ pca:
   threshold_quantile: 0.99
   pca_contribution_top_k: 10
 
+phase4:
+  design_version: phase4-development-v1
+  selection_metric: pr_auc
+  calibration_method: raw_probability_no_recalibration
+  calibration_bins: 5
+  association_method_version: development-association-v1
+  association_bootstrap_replicates: 250
+  evaluation_bootstrap_replicates: 1000
+  significance_alpha: 0.05
+  percentage_budgets: [0.01, 0.05, 0.10, 0.20]
+  fixed_top_k_budgets: [25, 50]
+  logistic_configurations:
+    - {id: logistic-c001, c: 0.01, penalty: l2}
+    - {id: logistic-c010, c: 0.10, penalty: l2}
+    - {id: logistic-c100, c: 1.00, penalty: l2}
+    - {id: logistic-c1000, c: 10.00, penalty: l2}
+  hist_gradient_boosting_configurations:
+    - {id: hgb-01, learning_rate: 0.03, max_iter: 100, max_leaf_nodes: 7, min_samples_leaf: 20, l2_regularization: 1.0}
+    - {id: hgb-02, learning_rate: 0.05, max_iter: 150, max_leaf_nodes: 7, min_samples_leaf: 15, l2_regularization: 1.0}
+    - {id: hgb-03, learning_rate: 0.05, max_iter: 150, max_leaf_nodes: 15, min_samples_leaf: 20, l2_regularization: 2.0}
+    - {id: hgb-04, learning_rate: 0.08, max_iter: 100, max_leaf_nodes: 15, min_samples_leaf: 15, l2_regularization: 2.0}
+
 outputs:
   database: data/processed/yieldguard.duckdb
   phase1_directory: data/processed/phase1
