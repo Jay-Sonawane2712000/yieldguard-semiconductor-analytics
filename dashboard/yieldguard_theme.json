@@ -1,0 +1,7 @@
+{
+  "name": "YieldGuard",
+  "dataColors": ["#0D5F89", "#4AA3A2", "#E3A008", "#C23B53", "#7B61A8", "#65758B"],
+  "background": "#F7F9FC",
+  "foreground": "#172033",
+  "tableAccent": "#0D5F89"
+}

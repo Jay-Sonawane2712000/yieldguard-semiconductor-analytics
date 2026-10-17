@@ -1,0 +1,9 @@
+---
+title: "YieldGuard Statistical Report"
+format: html
+toc: true
+---
+
+This Quarto entry point documents the preferred report format. The fully populated 32-section report is rendered deterministically by `yieldguard build-phase5` to `reports/rendered/yieldguard_statistical_report.html`; this fallback is used because Quarto was unavailable in the Phase 5 environment. All values come from reconciled `mart_dashboard_*` relations. See `docs/methods_and_limitations.md`, `docs/metric_dictionary.md`, and `docs/PHASE5_REPORT.md` for the versioned narrative and evidence.
+
+The generated report contains: executive summary; business problem; provenance; unit and label semantics; data trust; split design; leakage controls; quality policy; univariate and multivariate methods/results; overlap; contributions; associations; multiplicity; predictive design/selection/evaluation; uncertainty; review policy/results/queue; reconciliation; dashboard design; operational interpretation; limitations; simulation status; reproducibility; claim ledger; and next steps.

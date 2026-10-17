@@ -1,14 +1,26 @@
 # YieldGuard: Semiconductor Process Excursion Monitoring and Failure-Driver Triage
 
-YieldGuard is a reproducible semiconductor manufacturing analytics system built on the UCI SECOM dataset. It audits high-dimensional anonymized measurements, establishes leakage-safe chronological evaluation, and will ultimately combine statistical process monitoring, multivariate monitoring, failure-driver association, risk ranking, and a capacity-constrained engineering-review queue.
+YieldGuard is a reproducible semiconductor manufacturing analytics system built on the UCI SECOM dataset. It audits high-dimensional anonymized measurements and combines leakage-safe chronological evaluation, statistical process monitoring, multivariate monitoring, failure-driver association, risk ranking, and a capacity-constrained engineering-review queue.
 
 The project supports yield, process integration, quality, and manufacturing analytics teams deciding which measurements can be trusted and which later production entities merit investigation. It distinguishes statistical alerts and associations from causal root-cause conclusions.
 
-## Current verified scope
+## Measured outcome and current verified scope
 
-Phase 1 verified 1,567 production entities, 590 anonymized measurements, 104 failures, 440 quality-eligible measurements, and a retained final chronological block. Phase 2 freezes label-blind I-MR/EWMA monitoring, Phase 3 adds reference-only PCA T-squared/Q monitoring, and Phase 4 adds development-only failure associations plus a frozen retrospective risk-ranking policy and auditable review queue. See the phase reports under `docs/`; all sparse-failure performance estimates are directional.
+The system verifies 1,567 production entities, 590 anonymized measurements, 104 failures, and 440 quality-eligible measurements. On the 313-entity final block, the frozen model's PR-AUC is 0.0700 versus 0.1106 for the fixed monitoring baseline and 0.0543 for prevalence. At the frozen 10% budget, 32 reviews detect 2 of 17 failures (precision 0.0625; recall 0.1176). These sparse-failure estimates are directional.
 
-## Setup and Phase 1 reproduction
+The dashboard/reporting layer is reproducible and reconciled. Power BI Desktop itself was unavailable to automation, so no PBIX or Power BI screenshot is claimed; the exact build handoff is documented.
+
+## Architecture
+
+```text
+UCI SECOM -> validated DuckDB warehouse -> reference-only SPC/PCA
+          -> development associations/models -> frozen final evaluation/queue
+          -> dashboard marts -> Power BI extracts + HTML statistical report
+```
+
+See `docs/architecture.md` and `docs/data_lineage.md` for the complete controls and refresh path.
+
+## Setup and full reproduction
 
 ```powershell
 python -m venv .venv
@@ -22,28 +34,31 @@ yieldguard phase4-calibrate
 yieldguard phase4-develop
 # Commit the frozen budget decision before the next command.
 yieldguard phase4-final
+yieldguard build-phase5
 python -m pytest
 python -m ruff check .
 ```
 
-Raw source files, generated CSVs, and the local DuckDB database are intentionally excluded from Git. See `data/README.md` for provenance and acquisition details.
+Raw source files, generated CSVs/HTML, and the local DuckDB database are intentionally excluded from Git. See `data/README.md` for provenance and acquisition details.
 
 ## Repository navigation
 
-- `config/project.yaml` — thresholds, source configuration, seeds, and candidate allocations
-- `src/yieldguard/` — reusable acquisition, ingestion, split, audit, and persistence logic
-- `sql/` — documented SQL contracts and later transformations/marts
+- `config/project.yaml` — thresholds, sources, seeds, and candidate allocations
+- `src/yieldguard/` — acquisition, ingestion, monitoring, evaluation, and reporting logic
+- `sql/` — warehouse transformations and stable presentation marts
 - `tests/` — deterministic unit and integration checks
 - `docs/PROJECT_PLAN.md` — approved source-of-truth specification
-- `docs/REQUIREMENTS_ROADMAP.md` — requirement-to-phase execution map
 - `docs/PROJECT_STATUS.md` and `docs/DECISIONS.md` — resumable project memory
-- `docs/univariate_monitoring.md` — frozen selection rule, formulas, alert volume, and limitations
-- `docs/phase2_architecture.md` — SQL grains, keys, marts, and reconciliation controls
-- `docs/pca_monitoring.md` — reference-only PCA, thresholds, and contribution formulas
-- `docs/phase3_architecture.md` — multivariate tables, marts, and reconciliation controls
-- `docs/PHASE4_DEVELOPMENT_REPORT.md` — pre-final model, association, and budget evidence
-- `docs/PHASE4_REPORT.md` — frozen final evaluation and review-queue evidence
-- `docs/phase4_architecture.md` — Phase 4 grains, commands, and leakage controls
+- `docs/PHASE4_REPORT.md` — frozen final evaluation and queue evidence
+- `docs/PHASE5_REPORT.md` — Phase 5 evidence and explicit Power BI blocker
+- `docs/dashboard_build_guide.md` — exact three-page Power BI model, interactions, DAX, and reconciliation
+- `docs/ENGINEERING_DECISION_MEMO.md` — decision framing using the frozen policy
+- `reports/statistical_report.qmd` — report entry point; the CLI renders mandatory HTML
+- `docs/interview_guide.md` — concise interview-ready project explanation
+
+## Methods, uncertainty, and limitations
+
+All preprocessing and limits are learned before their evaluation period. Candidate search is bounded, baselines are explicit, the final review policy was committed before final evaluation, and uncertainty is reported with sparse-event caveats. Measurements are anonymous; alerts are not failures or specification breaches; associations are not causal; the review scenario is not staffing advice; and no savings or production-readiness claim is made. See `docs/methods_and_limitations.md` and `docs/metric_dictionary.md`.
 
 ## Dataset attribution
 

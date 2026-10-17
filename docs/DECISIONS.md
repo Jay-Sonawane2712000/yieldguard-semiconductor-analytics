@@ -1,5 +1,12 @@
 # Material decisions
 
+## D-010 — Phase 5 presentation boundary
+
+- **Decision:** DuckDB remains the analytical system of record; Power BI receives deterministic CSV presentation contracts and may add only documented relationships, types, and DAX measures.
+- **Why:** This prevents hidden analytical transformations in the presentation layer and makes refresh reconciliation reproducible.
+- **Evidence:** `sql/marts/040_phase5_dashboard_marts.sql`, `src/yieldguard/phase5.py`, and `docs/dashboard_build_guide.md`.
+- **Constraint:** Power BI Desktop was unavailable to automation, so PBIX/screenshots are not claimed or fabricated.
+
 ## D-001 — Preserve an untouched final directional block when feasible
 
 - **Status:** Approved by the project plan; Phase 1 evidence pending.
