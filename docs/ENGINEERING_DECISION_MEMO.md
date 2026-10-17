@@ -1,6 +1,7 @@
 # Engineering decision memo: frozen review policy
 
-**To:** Yield, process-integration, quality, and manufacturing analytics stakeholders  
+**To:** Yield, process-integration, quality, and manufacturing analytics stakeholders
+
 **Decision:** Retain the frozen top-10% review scenario as an auditable retrospective benchmark, but do not recommend production deployment from this dataset alone.
 
 ## Why this decision is supportable
