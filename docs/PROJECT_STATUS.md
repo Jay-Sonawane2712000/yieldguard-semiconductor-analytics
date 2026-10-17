@@ -8,6 +8,6 @@
 - **Unresolved blocker:** Power BI Desktop was unavailable to automation; PBIX, visual reconciliation, and screenshots are not claimed.
 - **Exact next action:** Report Phase 5 evidence/blocker and stop before Phase 6.
 - **Checks passed:** 23 tests, Ruff, deterministic repeated export hashes, source/mart/export reconciliation, and HTML section checks.
-- **Push status:** Phase 5 commit/push pending.
+- **Push status:** Phase 5 implementation through `3882f2b` is pushed to `origin/main`.
 
 See `docs/PHASE5_REPORT.md` for evidence and `docs/dashboard_build_guide.md` for the smallest Power BI handoff.
